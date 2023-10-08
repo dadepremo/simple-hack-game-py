@@ -4,14 +4,15 @@ import os
 import database as db
 import dbconnection as dbcon
 from colorama import Fore, Back, Style, init
+import subprocess
 init(autoreset=True)
 
 clear = lambda: os.system('cls')
 
 
-USER = ''
-PSW = ''
-ADDRESS = ''
+USER = ""
+PSW = ""
+ADDRESS = ""
 ROOT = False
 
 HASHED_PASSWORD_LENGTH = 10
@@ -22,10 +23,10 @@ HASHED_PASSWORD_LENGTH = 10
 
 def inputCommand():
     s = "> "
-    if USER != '':
+    if USER != "":
         s = " > "
 
-    c = ''
+    c = ""
     if ROOT == True:
         c = Fore.RED + USER + Fore.RESET
     else:
@@ -258,18 +259,25 @@ def sudo(d):
                 info("you already have root acces")
 
 def getUserAndPsw(l):
+    if len(l[1]) != 4:
+        error("wrong port size")
+        return
+    
     join = dbcon.getUserAndPswJoin(l[0], l[1])
-    if join is not None and join[11] == "ssh":
-        print("\nRetrieving informations...")
-        print("-> IP: " + Fore.GREEN + Style.BRIGHT + l[0] + Style.RESET_ALL)
-        print("-> PORT: " + Fore.YELLOW + Style.BRIGHT + l[1] + Style.RESET_ALL)
-        load(25)
-        print(Fore.YELLOW + Style.BRIGHT + "USER" + Style.RESET_ALL + " => " + Fore.GREEN + Style.BRIGHT + "HASHED PASSWORD" + Style.RESET_ALL)
-        print(join[1] + " => " + join[5])
-    elif join[11] == "ssh":
-        error("can't perform this exploit via this port")
-    else:
-        error("wrong ip-address or port")
+    try:
+        if join is not None and join[11] == "ssh":
+            print("\nRetrieving informations...")
+            print("-> IP: " + Fore.GREEN + Style.BRIGHT + l[0] + Style.RESET_ALL)
+            print("-> PORT: " + Fore.YELLOW + Style.BRIGHT + l[1] + Style.RESET_ALL)
+            load(25)
+            print(Fore.YELLOW + Style.BRIGHT + "USER" + Style.RESET_ALL + " => " + Fore.GREEN + Style.BRIGHT + "HASHED PASSWORD" + Style.RESET_ALL)
+            print(join[1] + " => " + join[5])
+        elif join[11] == "ssh":
+            error("can't perform this exploit via this port")
+        else:
+            error("wrong ip-address or port")
+    except Exception as e:
+        print("Errore:", e)
 
 def serverStart(type):
     # os.system("start /wait cmd /c serverlog.py")
@@ -282,7 +290,20 @@ def serverStart(type):
     else:
         ip = ADDRESS
 
-    os.system("start cmd /c serverlog.py " + type + " " + ip)
+    file_path = "serverlog.py"
+    current_path = os.environ.get('PATH', '')
+    os.environ['PATH'] = current_path + os.pathsep + os.path.dirname(file_path)
+    cmd_command = f'start cmd /k python "{os.path.basename(file_path)}" {type} {ip}'
+    subprocess.Popen(cmd_command, shell=True)
+    os.environ['PATH'] = current_path
+
+    
+        
+    #try:
+    #    subprocess.Popen(["start", "cmd", "/c", "python", "C:/Users/david/OneDrive/Desktop/giochino/serverlog.py", type, ip])
+    #except Exception as e:
+    #    print("Errore:", e)
+    #os.system("start cmd /c serverlog.py " + type + " " + ip)
 
 
 def prova():

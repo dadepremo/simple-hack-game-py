@@ -2,9 +2,12 @@ import time
 from colorama import Fore, Back, Style, init
 import sys
 import os
+from os import system
 import ctypes
 import datetime
 import random
+
+system("title SERVER HTTP")
 
 data_ora_corrente = datetime.datetime.now()
 data_corrente = data_ora_corrente.date()
