@@ -6,6 +6,7 @@ from os import system
 import ctypes
 import datetime
 import random
+import winsound as ws
 
 system("title SERVER HTTP")
 
@@ -53,21 +54,22 @@ init(autoreset=True)
 
 print("\n")
 title = Fore.GREEN + Style.BRIGHT + """
-     _______________  _______________  ______________  _______    _______  _______________  ______________ 
-    /               \/               \/              \/       \  /       \/               \/              \\
-    |               |                |      ____     |        |  |       |                |      ____     |
-    |               |                |     /    \    |        |  |       |                |     /    \    |
-    |       ________/         _______/     \____/    |        |  |       |         _______/     \____/    |
-    |               \                \ 	             |        |  |       |                \               |
-    \               |                |        _______/        |  |       |                |        _______/
-     \_________     |                |               \        \  /       |                |               \\
-     /              |         _______/               |         \/        |         _______/               |
-    /               |                \      |\       |                   |                \      |\       |
-    |               |                |      | \      |                   |                |      | \      |
-    |               |                |      |  \     |                   /                |      |  \     |
-    \_______________/\_______________/\_____/   \____/\_________________/ \_______________/\_____/   \____/
+     _______________  _______________  __________________  _______    _______  _______________  __________________ 
+    /               \/               \/                  \/       \  /       \/               \/                  \\
+    |               |                |       ______      |        |  |       |                |       ______      |
+    |               |                |      /      \     |        |  |       |                |      /      \     |
+    |       ________/         _______/      \______/     |        |  |       |         _______/      \______/     |
+    |               \                \ 	                 |        |  |       |                \                   |
+    \               |                |            _______/        |  |       |                |            _______/
+     \_________     |                |                   \        \  /       |                |                   \\
+     /              |         _______/                   |         \/        |         _______/                   |
+    /               |                \                   |                   |                \                   |
+    |               |                |        .          |                   |                |        .          |
+    |               |                |        |\         |                   /                |        |\         |
+    \_______________/\_______________/\_______/ \________/\_________________/ \_______________/\_______/ \________/
      """ + Style.RESET_ALL
 print(title)   
+ws.PlaySound("started", ws.SND_FILENAME)
 print("\n\n")
 print("                                  ╔══════════════════════════════════════╗")
 print("                                  ║           SERVER STARTING...         ║")
@@ -80,23 +82,31 @@ print(Style.NORMAL + "     Starting service server..." + Style.RESET_ALL)
 time.sleep(3)
 print()
 for log_message in code_list:
+    ws.PlaySound("sound1", ws.SND_FILENAME)
     print(log_message)
-    time.sleep(0.1)
+    time.sleep(0.025)
+    #time.sleep(0.1)
 time.sleep(4)
 os.system("cls")
 
 arg1 = sys.argv[1]
 ipaddress = sys.argv[2]
 
+myPortsDict = {
+    "ssh": "8080",
+    "http": "8686",
+    "smtp": "9090"
+}
+
 port = "";
 service = "";
-if arg1 == "ssh":
-    service = arg1
-    port = "8080"
-elif arg1 == "http":
-    service = arg1
-    port = "8686"
 
+if arg1 in myPortsDict:
+    service = arg1
+    port = myPortsDict[arg1]
+else:
+    service = "Unknown service"
+    port = "Unknown service"
 
 ctypes.windll.kernel32.SetConsoleWindowInfo(ctypes.windll.kernel32.GetStdHandle(-11), True, ctypes.byref(ctypes.wintypes._SMALL_RECT(0, 0, 50, 12)))
 
@@ -108,18 +118,23 @@ for i in range(9-len(service)):
 print("    ╔══════════════════════════════════════╗")
 print("    ║     " + Fore.GREEN + Style.BRIGHT + "     SERVER " + service.upper() + " STARTED... " + Style.RESET_ALL + space + "║")
 print("    ╚══════════════════════════════════════╝")
-time.sleep(0.5)
+ws.PlaySound("started", ws.SND_FILENAME)
+time.sleep(0.025)
+ws.PlaySound("sound1", ws.SND_FILENAME)
 print("     server running @ " + Fore.YELLOW + Style.BRIGHT + ipaddress + Style.RESET_ALL + " via port " + Fore.YELLOW + Style.BRIGHT + port + Style.RESET_ALL)
 
 print()
 
 time.sleep(3)
 print("     Details:")
-time.sleep(0.5)
+time.sleep(0.025)
+ws.PlaySound("sound1", ws.SND_FILENAME)
 print("         host ip: " + Fore.YELLOW + Style.BRIGHT + ipaddress + Style.RESET_ALL)
-time.sleep(0.5)
+time.sleep(0.025)
+ws.PlaySound("sound1", ws.SND_FILENAME)
 print("         port: " + Fore.YELLOW + Style.BRIGHT + port + Style.RESET_ALL)
-time.sleep(0.5)
+time.sleep(0.025)
+ws.PlaySound("sound1", ws.SND_FILENAME)
 print("         service: " + Fore.YELLOW + Style.BRIGHT + service + Style.RESET_ALL )
 print()
 
@@ -131,3 +146,10 @@ print()
 print()
 print("     Shutting down...")
 time.sleep(3)
+
+
+hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+if hwnd != 0:
+    ctypes.windll.user32.PostMessageW(hwnd, 0x0010, 0, 0)  # Chiudi la finestra
+# Assicurati che lo script Python venga completato
+os._exit(0)

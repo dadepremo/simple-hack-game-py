@@ -7,9 +7,20 @@ init(autoreset=True)
 portTypes = ["ssh", "http", "smtp"]
 
 descriptions = [
-    "Hack the user at the given ip-address and steal all the money",
+    "Hack the user at the given IP address and steal all the money",
     "Hack this address and just disconnect",
+    "Infiltrate a highly secure government database and extract classified information without leaving a trace.",
+    "Breach a multinational corporation's network to expose their unethical practices and protect sensitive consumer data.",
+    "Access a criminal syndicate's encrypted communications to gather evidence for law enforcement.",
+    "Hack into a terrorist organization's communication network to prevent a potential threat or attack.",
+    "Break into a rival tech company's servers to obtain their proprietary source code and gain a competitive edge.",
+    "Disrupt the operations of a cybercriminal group by targeting their command and control servers.",
+    "Gain access to a black market website and identify key vendors and buyers of illegal goods and services.",
+    "Compromise a rogue AI system that poses a threat to global cybersecurity.",
+    "Assist a whistleblower by hacking into a corrupt organization's servers to leak incriminating documents to the public.",
+    "Infiltrate a high-stakes underground poker game to expose cheating players and recover stolen funds."
 ]
+
 
 def casualString(l):
     c = string.ascii_letters + string.digits

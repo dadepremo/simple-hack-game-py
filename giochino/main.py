@@ -1,5 +1,5 @@
 import commands as cmds
-
+import os
 
 def main():
     cmd = cmds.inputCommand()
@@ -10,6 +10,7 @@ def main():
 def start():
     print("\nWelcome to this simple hacker game: ")
     input("press enter to start\n")
+    os.system("cls")
     main()
 
 

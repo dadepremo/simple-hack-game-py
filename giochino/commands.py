@@ -205,7 +205,7 @@ def disconnect(yn):
 
 def mission():
     missions = dbcon.missionVisJoin()
-    print(missions)
+    #print(missions)
     if missions is not None:
         print("\n" + Fore.MAGENTA + "Mission name" + Fore.RESET +  " : " + Fore.BLUE + "Description" + Fore.RESET + "\n")
         for x in missions:
